@@ -65,6 +65,12 @@ cmake -DCMAKE_BUILD_TYPE=Release ../..
 Then you can build Debug or Release binaries by running "make" inside the
 relevant build directory.
 
+You can specify the TBB_DIR variable in case of TBB not being installed in the
+default system paths:
+```sh
+cmake -DTBB_PATH=/home/user/tbb_install/lib ..
+```
+
 Other options
 -------------
 
