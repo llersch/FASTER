@@ -60,4 +60,8 @@ set (FASTER_SOURCES ${FASTER_SOURCES}
 )
 endif()
 
-add_library(faster STATIC ${FASTER_SOURCES} ${FASTER_HEADERS})
+add_library(faster STATIC ${FASTER_SOURCES})
+target_include_directories(faster PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/device
+    ${CMAKE_CURRENT_SOURCE_DIR}/environment)
