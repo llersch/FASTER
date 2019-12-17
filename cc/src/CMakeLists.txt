@@ -48,6 +48,7 @@ set (FASTER_SOURCES
   core/address.cc
   core/lss_allocator.cc
   core/thread.cc
+  core/c.cc
 )
 
 if (MSVC)
