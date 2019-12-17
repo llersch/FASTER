@@ -62,4 +62,4 @@ endif()
 
 add_library(faster STATIC ${FASTER_SOURCES})
 target_include_directories(faster PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(faster PUBLIC TBB::tbb)
+target_link_libraries(faster PUBLIC stdc++fs uuid TBB::tbb aio m Threads::Threads)

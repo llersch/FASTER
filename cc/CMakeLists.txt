@@ -5,6 +5,7 @@ enable_testing()
 include(ExternalProject)
 project(FASTER)
 
+find_package(Threads REQUIRED)
 find_package(TBB REQUIRED)
 
 if (MSVC)
@@ -71,7 +72,7 @@ set (FASTER_TEST_LINK_LIBS ${FASTER_LINK_LIBS} gtest)
 if(WIN32)
   set(FASTER_TEST_LINK_LIBS ${FASTER_TEST_LINK_LIBS} rpcrt4)
 else()
-  set (FASTER_TEST_LINK_LIBS ${FASTER_TEST_LINK_LIBS} stdc++fs uuid TBB::tbb gcc aio m stdc++ pthread)
+  set (FASTER_TEST_LINK_LIBS ${FASTER_TEST_LINK_LIBS})
 endif()
 
 # Set the link libraries to for benchmark binary compilation
@@ -79,7 +80,7 @@ set (FASTER_BENCHMARK_LINK_LIBS ${FASTER_LINK_LIBS})
 if(WIN32)
 set (FASTER_BENCHMARK_LINK_LIBS ${FASTER_LINK_LIBS} rpcrt4 wsock32 Ws2_32)
 else()
-  set (FASTER_BENCHMARK_LINK_LIBS ${FASTER_BENCHMARK_LINK_LIBS} stdc++fs uuid TBB::tbb gcc aio m stdc++ pthread)
+  set (FASTER_BENCHMARK_LINK_LIBS ${FASTER_BENCHMARK_LINK_LIBS})
 endif()
 
 #Function to automate building test binaries
