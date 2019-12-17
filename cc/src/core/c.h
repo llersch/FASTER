@@ -13,7 +13,7 @@ extern faster_t* faster_create(uint64_t table_size, uint64_t log_size, const cha
 extern void faster_close(faster_t* kv);
 extern void faster_start_session(faster_t* kv);
 extern void faster_stop_session(faster_t* kv);
-extern bool faster_get(faster_t* kv, const char* key, uint64_t key_len);
+extern uint64_t faster_get(faster_t* kv, const char* key, uint64_t key_len, char* out);
 extern bool faster_put(faster_t* kv, const char* key, uint64_t key_len,
                                      const char* val, uint64_t val_len);
 

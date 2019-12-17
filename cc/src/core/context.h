@@ -76,9 +76,10 @@ public:
     typedef Key key_t;
     typedef Value value_t;
 
-    ReadContext(const char* key, uint64_t key_length)
+    ReadContext(const char* key, uint64_t key_length, char* out)
         : key_{ key, key_length }
-        , output_length{ 0 } {
+        , output_length{ 0 }
+        , output_buffer{ out } {
     }
 
     /// Copy (and deep-copy) constructor.
@@ -102,7 +103,7 @@ public:
         do {
         before = value.gen_lock_.load();
         output_length = value.length_;
-        std::memcpy(output_bytes, value.buffer(), value.length_);
+        std::memcpy(output_buffer, value.buffer(), value.length_);
         //output_bytes[0] = value.buffer()[0];
         //output_bytes[1] = value.buffer()[value.length_ - 1];
         after = value.gen_lock_.load();
@@ -120,5 +121,5 @@ private:
 public:
     uint8_t output_length;
     // Extract two bytes of output.
-    char output_bytes[1024];
+    char* output_buffer;
 };

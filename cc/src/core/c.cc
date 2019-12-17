@@ -39,15 +39,15 @@ void faster_stop_session(faster_t* kv) {
     kv->rep->StopSession();
 }
 
-bool faster_get(faster_t* kv, const char* key, uint64_t key_len) {
+uint64_t faster_get(faster_t* kv, const char* key, uint64_t key_len, char* out) {
     auto callback = [](IAsyncContext* ctxt, Status results)
     {
         CallbackContext<ReadContext> context{ ctxt };
     };
 
-    ReadContext ctx{ key, key_len };
+    ReadContext ctx{ key, key_len, out};
     Status result = kv->rep->Read(ctx, callback, 1);
-    return result == Status::Ok;
+    return result == Status::Ok ? ctx.output_length : 0;
 }
 
 bool faster_put(faster_t* kv, const char* key, uint64_t key_len,
