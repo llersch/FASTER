@@ -3,22 +3,19 @@
 #include "context.h"
 
 #include "c.h"
-#include "device/file_system_disk.h"
+#include "device/null_disk.h"
 
 extern "C" {
 
 struct faster_t {
-    typedef FASTER::environment::QueueIoHandler QueueIoHandler;
-    typedef FASTER::device::FileSystemDisk<QueueIoHandler, 1073741824L> FileSystemDisk;
-    typedef FASTER::core::FasterKv<Key, Value, FileSystemDisk> FasterKv;
+    typedef FASTER::core::FasterKv<Key, Value, FASTER::device::NullDisk> FasterKv;
 
     FasterKv* rep;
 };
 
-faster_t* faster_create() {
-    static constexpr uint64_t kKeySpace = (1L << 15);
+faster_t* faster_create(uint64_t table_size, uint64_t log_size, const char* filename) {
     faster_t* kv = new faster_t;
-    kv->rep = new FASTER::core::FasterKv<Key, Value, FASTER::device::FileSystemDisk<FASTER::environment::QueueIoHandler, 1073741824L>>(kKeySpace, 192ULL << 20, "sample_storage");
+    kv->rep = new faster_t::FasterKv(table_size, log_size, filename);
     kv->rep->StartSession();
     return kv;
 }
@@ -32,6 +29,14 @@ void faster_close(faster_t* kv) {
     kv->rep->StopSession();
     delete kv->rep;
     delete kv;
+}
+
+void faster_start_session(faster_t* kv) {
+    kv->rep->StartSession();
+}
+
+void faster_stop_session(faster_t* kv) {
+    kv->rep->StopSession();
 }
 
 bool faster_get(faster_t* kv, const char* key, uint64_t key_len) {
